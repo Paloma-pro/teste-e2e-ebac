@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 import produtosPage from "../support/page_objects/produtos.page";
+import lojaPage from "../support/page_objects/loja.page";
 
 context('Exercicio - Testes End-to-end - Fluxo de pedido', () => {
   /*  Como cliente 
@@ -10,35 +11,21 @@ context('Exercicio - Testes End-to-end - Fluxo de pedido', () => {
       Preenchendo todas opções no checkout
       E validando minha compra ao final */
 
-  beforeEach(() => {
-      cy.visit('produtos')
+  before(() => {
+    cy.visit('http://lojaebac.ebaconline.art.br/')
+    cy.get('.icon-user-unfollow').click()
+    cy.login('Testudo.Test@teste.com', 'Teste@123')
+
   });
 
   it('Buscar os produto, preencher as opções e adicionar ao carrinho', () => {
-    produtosPage.buscarProdutos('Autumn Pullie')
-    cy.get('.search > .tbay-search-form > .form-ajax-search > .form-group > .input-group > .button-group > .button-search').click()
-    produtosPage.addProdutoCarrinho('M', 'Green', 1)
-    cy.get('.woocommerce-message').should('exist')
-
-    produtosPage.visitarUrl()
-    produtosPage.buscarProdutoLista('Aether Gym Pant')
-    cy.get('.woocommerce-tabs').should('contain', 'The Aether Gym Pant is built for the studio,')
-    produtosPage.addProdutoCarrinho('36', 'Brown', 1)
-    cy.get('.woocommerce-message').should('exist')
-
-    produtosPage.visitarProduto('Zoltan Gym Tee')
-    produtosPage.addProdutoCarrinho('XS', 'Blue', 1)
-    cy.get('.woocommerce-message').should('exist')
-
-    cy.fixture('produtos').then(dados =>{
-      produtosPage.buscarProdutos(dados[0].nomeProduto)
-      cy.get('.search > .tbay-search-form > .form-ajax-search > .form-group > .input-group > .button-group > .button-search').click()
-      produtosPage.addProdutoCarrinho(
-          dados[0].tamanho,
-          dados[0].cor,
-          dados[0].quantidade)
-      cy.get('.woocommerce-message').should('contain', dados[0].nomeProduto)
-
-    });
+   cy.addProduto('Atlas Fitness Tank')
+   cy.addProduto('Helena Hooded Fleece')
+   cy.addProduto('Eos V-Neck Hoodie')
+   cy.addProduto('Atomic Endurance Running Tee (V-neck)')
+   cy.get('.dropdown-toggle > .text-skin > .icon-basket').click()
+   cy.get('#cart > .dropdown-menu > .widget_shopping_cart_content > .mini_cart_content > .mini_cart_inner > .mcart-border > .buttons > .checkout').click()
+  lojaPage.preencherCheckout()
+  
   });
 })
