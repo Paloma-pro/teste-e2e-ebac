@@ -10,13 +10,13 @@ pipeline {
 
         stage('Instalar Dependências') {
             steps {
-                sh 'npm install'  // Ajuste conforme a ferramenta usada (Selenium, Cypress, etc.)
+                bat 'npm install'  // Ajuste conforme a ferramenta usada (Selenium, Cypress, etc.)
             }
         }
 
         stage('Executar Testes') {
             steps {
-                sh 'npx cypress run'  // Exemplo usando Cypress
+                bat 'npx cypress run'  // Exemplo usando Cypress
             }
         }
     }
