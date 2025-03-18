@@ -4,7 +4,8 @@ pipeline {
     stages {
         stage('Checkout Código') {
             steps {
-                git 'https://github.com/Paloma-pro/teste-e2e-ebac.git'
+                git branch: 'main', url: 'https://github.com/Paloma-pro/teste-e2e-ebac.git'
+
             }
         }
 
@@ -20,23 +21,3 @@ pipeline {
             }
         }
 
-        stage('Publicar Relatório') {
-            steps {
-                publishHTML(target: [
-                    allowMissing: false,
-                    alwaysLinkToLastBuild: true,
-                    keepAll: true,
-                    reportDir: 'cypress/reports',
-                    reportFiles: 'index.html',
-                    reportName: 'Relatório de Testes Web'
-                ])
-            }
-        }
-    }
-
-    post {
-        always {
-            junit '**/cypress/results/*.xml'
-        }
-    }
-}
